@@ -10,6 +10,7 @@ bibtexparser~=1.1.0
 alembic~=1.4.2
 Flask-Classful==0.14.2
 Sphinx==3.1.2
+python-doi==0.2.0
 
 ## For journal articles:
 
