@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Search{% endblock %} </h1>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <form method="post">
+            <label for="doi">Enter DOI</label>
+            <input name="doi" id="doi" required>
+            <input type="submit" value="submit" onclick="loading();">
+        </form>
+        <h4> Please upload file containing DOI , allowed extensions are csv and json</h4>
+        <form method = "POST"
+             enctype = "multipart/form-data">
+             <input type = "file" name = "file" />
+             <input type = "submit" onclick="loading();"/>
+        </form>
+            {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+<div>
+
+
+ {% if context %}
+        {% if context['book'] %}
+
+        <h3>DOIs Pointing to Books</h3>
+        <div>
+            <table style="width:100%">
+                <tr>
+                    {% for i,j in context['book'][0].items() %}
+                            <td>{{i}}</td>
+                    {% endfor %}
+                </tr>
+                {% for i in context['book'] %}
+                <tr>
+                    {% for j in i %}
+                    <td> <span class="text">{{i[j]}}</span></td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+            {% endif %}
+
+        {% if context['article'] %}
+        <h3>DOIs pointing to Articles</h3>
+            <div>
+                <table style="width:100%">
+                    <tr>
+                        {% for i,j in context['article'][0].items() %}
+                            <td>{{i}}</td>
+                    {% endfor %}
+
+                    </tr>
+                    {% for i in context['article'] %}
+
+                    <tr>
+                        {% for j in i %}
+                        <td> <span class="text">{{i[j]}}</span></td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                 </table>
+            </div>
+        {% endif %}
+    {% if context['paper'] %}
+        <h3>DOIs pointing to Paper</h3>
+            <div>
+                <table style="width:100%">
+                    <tr>
+                        {% for i,j in context['paper'][0].items() %}
+                            <td>{{i}}</td>
+                    {% endfor %}
+                    </tr>
+                    {% for i in context['paper'] %}
+                    <tr>
+                        {% for j in i %}
+                        <td> <span class="text">{{i[j]}}</span></td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                 </table>
+            </div>
+        {% endif %}
+        <div>
+            <a href="{{url_for('DOIView:download', file_bool=1)}}" target="blank">
+                <button class='btn btn-default'>Download JSON</button></a>
+            <a href="{{url_for('DOIView:download', file_bool=0)}}" target="blank">
+                <button class='btn btn-default'>Download Bibtex</button></a>
+        </div>
+{% endif %}
+</div>
+{% endblock %}
